@@ -1,1 +1,1 @@
-<h1> I'm making tremendous progress in my cloud computing learning journey and i will soon start applying for jobs. I will have to learn som Clou Solution Architect tools to be ready for my first job.<h1>	
+<h1> I'm making tremendous progress in my cloud computing learning journey and i will soon start applying for jobs. I will have to learn som Clou Solution Architect tools to be ready for my first job. I actualy want to contribute tho the worl with my skills.<h1>	
