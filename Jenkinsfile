@@ -1,31 +1,24 @@
-pipeline{
-    tools{
-        jdk 'myjava'
-        maven 'mymaven'
+pipeline {
+    agent any
+
+    tools {
+        jdk 'ChiomaJava'
+        maven 'ChiomaMaven'
     }
-        agent any
-      stages{
-           stage('Checkout'){
-              steps{
-                 echo 'cloning..'
-                 git 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
-              }
-          }
-          stage('Compile with maven'){
-              steps{
-                  echo 'compiling..'
-                  sh 'mvn compile'
-              }
-          }
-          stage('CodeReview with maven'){
-              steps{
 
-                  echo 'codeReview'
-                  sh 'mvn pmd:pmd'
-              }
-          }
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Cloning repository...'
+                git 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
+            }
+        }
 
-          stage('Package with maven'){
-              steps{
-                  sh 'mvn package'
+        stage('Compile with Maven') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+    }
+}
 
