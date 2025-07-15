@@ -3,11 +3,11 @@ Pipeline{
         jdk 'myjava'
         maven 'mymaven'
     }
-	agent any
+        agent any
       stages{
            stage('Checkout'){
               steps{
-		 echo 'cloning..'
+                 echo 'cloning..'
                  git 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
               }
           }
@@ -15,20 +15,17 @@ Pipeline{
               steps{
                   echo 'compiling..'
                   sh 'mvn compile'
-	      }
+              }
           }
           stage('CodeReview with maven'){
               steps{
-		    
-		  echo 'codeReview'
+
+                  echo 'codeReview'
                   sh 'mvn pmd:pmd'
               }
           }
-          
+
           stage('Package with maven'){
               steps{
                   sh 'mvn package'
-              }
-          }
-      }
-}
+
