@@ -2,23 +2,49 @@ pipeline {
     agent any
 
     tools {
-        jdk 'ChiomaJava'
-        maven 'ChiomaMaven'
+        jdk 'chiomajava'
+        maven 'chiomamaven'
+    }
+
+    environment {
+        REPO_URL = 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                echo 'Cloning repository...'
-                git 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
+                echo '🔄 Cloning ChiomaDevOpsLab repository...'
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-chioma',
+                    usernameVariable: 'GIT_USERNAME',
+                    passwordVariable: 'GIT_PASSWORD'
+                )]) {
+                    git url: "https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git"
+                }
             }
         }
 
-        stage('Compile with Maven') {
+        stage('Compile') {
             steps {
-                sh 'mvn clean compile'
+                echo '⚙️ Compiling the Maven project...'
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Code Review') {
+            steps {
+                echo '🔍 Running static code analysis with PMD...'
+                sh 'mvn pmd:pmd'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo '📦 Packaging the application...'
+                sh 'mvn package'
             }
         }
     }
 }
+
 
