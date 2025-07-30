@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'chiomajava'
+        maven 'chiomamaven'
+    }
+
+    environment {
+        REPO_URL = 'https://github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Cloning ChiomaDevOpsLab repository...'
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-chioma',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    git credentialsId: 'github-chioma', url: "${REPO_URL}"
+                }
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                echo 'Compiling the Maven project...'
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Code Review') {
+            steps {
+                echo 'Running static code analysis with PMD...'
+                sh 'mvn pmd:pmd'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                sh 'mvn package'
+            }
+        }
+    }
+}
+
