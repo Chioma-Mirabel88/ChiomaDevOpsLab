@@ -50,9 +50,9 @@ pipeline {
         }
 
         stage('Package') {
-            agent { label 'slave1' }
+            agent { label 'master' }
             steps {
-                echo '📦 Packaging the application on slave1...'
+                echo '📦 Packaging the application on master...'
                 sh 'mvn package'
             }
         }
