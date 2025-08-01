@@ -15,12 +15,8 @@ pipeline {
             agent any
             steps {
                 echo '🔄 Cloning ChiomaDevOpsLab repository...'
-                withCredentials([usernamePassword(
-                    credentialsId: 'github-chioma',
-                    usernameVariable: 'GIT_USERNAME',
-                    passwordVariable: 'GIT_PASSWORD'
-                )]) {
-                    git url: "https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git"
+                withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
+                    git url: "https://${GITHUB_PAT}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git"
                 }
             }
         }
