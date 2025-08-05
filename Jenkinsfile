@@ -14,12 +14,12 @@ pipeline {
         stage('Checkout') {
             agent any
             steps {
-                echo '🔄 Cloning ChiomaDevOpsLab repository using GitHub PAT...'
-                withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
+                echo '🔄 Cloning ChiomaDevOpsLab repository using GitHub username and PAT...'
+                withCredentials([usernamePassword(credentialsId: 'github-pat', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         git config --global user.email "chiomaobiekeh@gmail.com"
                         git config --global user.name "Chioma-Mirabel88"
-                        git clone https://${GITHUB_PAT}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git
+                        git clone https://${USERNAME}:${PASSWORD}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git
                     '''
                 }
             }
@@ -66,3 +66,4 @@ pipeline {
         }
     }
 }
+
