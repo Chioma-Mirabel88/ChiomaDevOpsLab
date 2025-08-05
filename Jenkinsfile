@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     tools {
         jdk 'chiomajava'
@@ -12,13 +12,13 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            agent any
             steps {
                 echo '🔄 Cloning ChiomaDevOpsLab repository using GitHub username and PAT...'
                 withCredentials([usernamePassword(credentialsId: 'github-pat', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         git config --global user.email "chiomaobiekeh@gmail.com"
                         git config --global user.name "Chioma-Mirabel88"
+                        rm -rf ChiomaDevOpsLab
                         git clone https://${USERNAME}:${PASSWORD}@github.com/Chioma-Mirabel88/ChiomaDevOpsLab.git
                     '''
                 }
@@ -26,9 +26,8 @@ pipeline {
         }
 
         stage('Compile') {
-            agent { label 'slave1' }
             steps {
-                echo '⚙️ Compiling the Maven project on slave1 with debug info...'
+                echo '⚙️ Compiling the Maven project with debug info...'
                 dir('ChiomaDevOpsLab') {
                     sh 'mvn compile -X'
                 }
@@ -36,9 +35,8 @@ pipeline {
         }
 
         stage('Code Review') {
-            agent { label 'slave2' }
             steps {
-                echo '🔍 Running static code analysis with PMD on slave2 with debug info...'
+                echo '🔍 Running static code analysis with PMD...'
                 dir('ChiomaDevOpsLab') {
                     sh 'mvn pmd:pmd -X'
                 }
@@ -46,9 +44,8 @@ pipeline {
         }
 
         stage('Test') {
-            agent { label 'slave2' }
             steps {
-                echo '🧪 Running tests on slave2 with debug info...'
+                echo '🧪 Running tests...'
                 dir('ChiomaDevOpsLab') {
                     sh 'mvn test -X'
                 }
@@ -56,9 +53,8 @@ pipeline {
         }
 
         stage('Package') {
-            agent { label 'master' }
             steps {
-                echo '📦 Packaging the application on master with debug info...'
+                echo '📦 Packaging the application...'
                 dir('ChiomaDevOpsLab') {
                     sh 'mvn package -X'
                 }
