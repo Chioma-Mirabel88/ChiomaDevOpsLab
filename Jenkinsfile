@@ -23,18 +23,18 @@ pipeline {
             }
         }
 
-        stage('Compile on Slave 1') {
-            agent { label 'slave1' }
+        stage('Compile on Slave 2') {
+            agent { label 'slave2' }
             steps {
-                echo 'Compiling code on slave1...'
+                echo 'Compiling code on slave2...'
                 sh 'mvn compile'
             }
         }
 
-        stage('Review and Unit Test on Slave 2') {
-            agent { label 'slave2' }
+        stage('Review and Unit Test on Slave 1') {
+            agent { label 'slave1' }
             steps {
-                echo 'Code review and unit testing on slave2...'
+                echo 'Code review and unit testing on slave1...'
                 // Simulated review task
                 echo 'Performing code review (simulated)...'
                 
